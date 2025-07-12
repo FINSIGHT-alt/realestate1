@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Telangana Real Estate</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f3f3;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+    }
+    #filterBar {
+      padding: 20px;
+      background: white;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    select, input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    #properties {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .card-content {
+      padding: 15px;
+    }
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+    .card p {
+      margin: 5px 0;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+<header>🏠 Telangana Property Listings</header>
+
+<div id="filterBar">
+  <input type="text" id="searchInput" placeholder="Search by name or city..." oninput="renderProperties()">
+  <select id="cityFilter" onchange="renderProperties()">
+    <option value="">All Cities</option>
+    <option value="Hyderabad">Hyderabad</option>
+    <option value="Warangal">Warangal</option>
+    <option value="Khammam">Khammam</option>
+    <option value="Nizamabad">Nizamabad</option>
+    <option value="Karimnagar">Karimnagar</option>
+    <option value="Nalgonda">Nalgonda</option>
+  </select>
+</div>
+
+<div id="properties"></div>
+
+<script>
+  const listings = [
+    {
+      name: "3BHK Apartment in Banjara Hills",
+      city: "Hyderabad",
+      price: "₹1.2 Cr",
+      size: "1800 sqft",
+      type: "Apartment",
+      image: "https://source.unsplash.com/400x300/?apartment"
+    },
+    {
+      name: "2BHK Flat in Warangal",
+      city: "Warangal",
+      price: "₹42 Lakh",
+      size: "1200 sqft",
+      type: "Flat",
+      image: "https://source.unsplash.com/400x300/?house"
+    },
+    {
+      name: "Villa in Khammam",
+      city: "Khammam",
+      price: "₹85 Lakh",
+      size: "2200 sqft",
+      type: "Villa",
+      image: "https://source.unsplash.com/400x300/?villa"
+    },
+    {
+      name: "Plot in Nizamabad",
+      city: "Nizamabad",
+      price: "₹25 Lakh",
+      size: "240 sq yards",
+      type: "Land",
+      image: "https://source.unsplash.com/400x300/?land"
+    },
+    {
+      name: "Luxury Villa in Jubilee Hills",
+      city: "Hyderabad",
+      price: "₹4.5 Cr",
+      size: "5000 sqft",
+      type: "Villa",
+      image: "https://source.unsplash.com/400x300/?mansion"
+    },
+    {
+      name: "Affordable Flat in Karimnagar",
+      city: "Karimnagar",
+      price: "₹30 Lakh",
+      size: "1000 sqft",
+      type: "Flat",
+      image: "https://source.unsplash.com/400x300/?real-estate"
+    },
+    {
+      name: "Commercial Plot in Nalgonda",
+      city: "Nalgonda",
+      price: "₹60 Lakh",
+      size: "350 sq yards",
+      type: "Land",
+      image: "https://source.unsplash.com/400x300/?commercial"
+    }
+  ];
+
+  function renderProperties() {
+    const city = document.getElementById("cityFilter").value.toLowerCase();
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const container = document.getElementById("properties");
+    container.innerHTML = "";
+
+    const filtered = listings.filter(p =>
+      (!city || p.city.toLowerCase() === city) &&
+      (p.name.toLowerCase().includes(search) || p.city.toLowerCase().includes(search))
+    );
+
+    if (filtered.length === 0) {
+      container.innerHTML = "<p style='text-align:center;width:100%;'>No properties found.</p>";
+      return;
+    }
+
+    filtered.forEach(p => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${p.image}" alt="${p.name}">
+        <div class="card-content">
+          <h3>${p.name}</h3>
+          <p><strong>City:</strong> ${p.city}</p>
+          <p><strong>Type:</strong> ${p.type}</p>
+          <p><strong>Size:</strong> ${p.size}</p>
+          <p><strong>Price:</strong> ${p.price}</p>
+        </div>
+      `;
+      container.appendChild(card);
+    });
+  }
+
+  // Initial render
+  renderProperties();
+</script>
+
+</body>
+</html>
